@@ -13,50 +13,40 @@ router.get('/parallel', function(req, res, next) {
 
 router.post('/parallel', function(req, res, next) {
   var par = new Parallel(req.body);
-  console.log("In Post");
-  console.log(par);
-  console.log(req.body);
+//  console.log("In Post");
+//  console.log(par);
+//  console.log(req.body);
 
   par.save(function(err, par) {
   if(err) { 
-    console.log("Error"); 
+//    console.log("Error"); 
     for(field in err.errors) {
-      console.log(err.errors[field].message);
+//      console.log(err.errors[field].message);
     }
   }
-  console.log("After Save");
+//  console.log("After Save");
   res.json(par);
   });
 });
 
 router.delete('/parallel/:id', function(req, res, next) {
-  console.log("In delete");
-  console.log(req.params.id);
-  var toDelete = {
-    name : req.params.id
-  }
-  console.log(toDelete);
-  Parallel.find(toDelete, function (err, docs) {
+//  console.log("In delete");
+//  console.log(req.params.id);
+  Parallel.findOne({_id:req.params.id}).exec(function (err, docs) {
     if(err) { 
-      console.log("Error"); 
+//      console.log("Error"); 
       for(field in err.errors) {
-        console.log(err.errors[field].message);
+//        console.log(err.errors[field].message);
+      }
+    } else {
+      if(docs) {
+        docs.remove();
       }
     }
-    console.log("In Find");
-    console.log(docs);
+//    console.log("After err in Delete");
+//    console.log(docs);
   });
-/*
-  Parallel.remove(req.body, function(err) {
-    if(err) { 
-      console.log("Error"); 
-      for(field in err.errors) {
-        console.log(err.errors[field].message);
-      }
-    }
-  });
-*/
-  console.log("After Delete");
+//  console.log("After Delete");
   res.json();
 });
 

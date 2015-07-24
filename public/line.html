@@ -21,7 +21,8 @@
 <script src="dist/angular-charts.js"></script>
 <body ng-controller="MainController">
 
-<form ng-submit="submit()" ng-controller="MainController">
+<h1> CS 484 Performance Grapher </h1>
+<form ng-submit="submit()" >
   Enter Performance Results:
   Name: <input type="text" ng-model="username" name="Name" />
   <br>
@@ -33,7 +34,7 @@
   <input type="submit" id="submit" value="Submit" />
 </form>
   <br>
-<form ng-submit="delete()" ng-controller="MainController">
+<form ng-submit="delete()">
 Enter series to delete (please only delete your own data):
 Name: <input type="text" ng-model="deletename" name="DeleteName" />
 <input type="submit" id="delete" value="Delete" />

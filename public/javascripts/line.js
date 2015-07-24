@@ -5,6 +5,7 @@ d3DemoApp.controller('MainController',
     $scope.procs = [1,2,4,8,16,32];
     $scope.data = {
       series: [],
+      mongoid: [],
       data: []
     }
     $http.get('/parallel').success(function(data){
@@ -12,6 +13,7 @@ d3DemoApp.controller('MainController',
         this.x = xval;
         this.y = [];
       }
+//        console.log(data);
       // First create the array of points, then we will fill in the times
       for(var nproc = 0; nproc < $scope.procs.length; nproc++) {
         var point = new Point($scope.procs[nproc].toString());
@@ -20,6 +22,7 @@ d3DemoApp.controller('MainController',
       // Now setup the user names and values for each user
       for(var user = 0; user < data.length; user++) {
         $scope.data.series.push(data[user].name);
+        $scope.data.mongoid.push(data[user]._id);
         for(var nproc = 0; nproc < $scope.procs.length; nproc++) {
           $scope.data.data[nproc].y.push(data[user].data[nproc]);
         }
@@ -72,9 +75,10 @@ d3DemoApp.controller('MainController',
 
   $scope.delete = function() {
     var delIndex = 0;
-    console.log($scope.deletename);
+//    console.log($scope.deletename);
     delIndex = $scope.data.series.indexOf($scope.deletename);
-    console.log(delIndex);
+    var delmongoid = $scope.data.mongoid[delIndex];
+//    console.log(delIndex,delmongoid);
     if(delIndex !== -1) {
 	$scope.data.series.splice(delIndex, 1);
     } else {
@@ -85,14 +89,11 @@ d3DemoApp.controller('MainController',
         $scope.data.data[i].y.splice(delIndex,1);
       }
     }
-    var deluser = {
-      name: $scope.deletename
-    }
-    $http.delete('/parallel', deluser).success(function(data){
-      console.log("delete");
-      console.log(data);
+    var delpath = "/parallel/"+delmongoid;
+    $http.delete(delpath).success(function(data){
+//      console.log("delete");
+//      console.log(data);
     });
-    console.log(deluser);
   }
 
   $scope.submit = function() {
@@ -113,10 +114,10 @@ d3DemoApp.controller('MainController',
       data: $scope.times
     }
     $http.post('/parallel', newPar).success(function(data){
-      console.log("post");
-      console.log(data);
+//      console.log("post");
+//      console.log(data);
     });
-    console.log(newPar);
+//    console.log(newPar);
   }
   window.dispatchEvent(new Event('resize'));
 
